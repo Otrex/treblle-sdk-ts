@@ -17,7 +17,7 @@ export interface TrebllePluginPayload {
     body: Record<string, any>;
     ip?: string;
     url: string;
-    method: string | "post" | "put" | "delete" | "patch" | "head";
+    method: string | "post" | "put" | "delete" | "patch" | "head" | "get";
     headers: {
       "host": string;
       "user-agent": string;
