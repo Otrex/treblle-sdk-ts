@@ -8,5 +8,8 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "urllib": "^3.19.3"
   }
 }
