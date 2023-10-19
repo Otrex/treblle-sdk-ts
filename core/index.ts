@@ -4,6 +4,8 @@ import PayloadBuilder from "./payload-builder";
 import Queue from "./queue-runner";
 import { TrebllePluginPayload, TreblleConfig } from "./types";
 
+export * from "./types";
+
 /**
  * Handler class for managing data processing and dispatching to Treblle servers.
  */
