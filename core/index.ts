@@ -1,8 +1,8 @@
-import { IPluginData, TreblleConfig } from "../types";
 import { request } from "urllib";
-import Parser from "./Parser";
-import LoadBalancer from "./loadBalancer";
-import Queue from "./queue";
+import LoadBalancer from "./load-balancer";
+import PayloadBuilder from "./payload-builder";
+import Queue from "./queue-runner";
+import { TrebllePluginPayload, TreblleConfig } from "./types";
 
 /**
  * Handler class for managing data processing and dispatching to Treblle servers.
@@ -16,7 +16,7 @@ export default class TreblleCore {
   /**
    * The parser used to prepare data for transmission.
    */
-  private parser: Parser;
+  private parser: PayloadBuilder;
 
   /**
    * The router for load balancing requests to Treblle servers.
@@ -32,7 +32,7 @@ export default class TreblleCore {
   constructor(private config: TreblleConfig) {
     this.validateConfig();
     this.queue = new Queue();
-    this.parser = new Parser(config);
+    this.parser = new PayloadBuilder(config);
     this.router = new LoadBalancer([
       "https://rocknrolla.treblle.com",
       "https://punisher.treblle.com",
@@ -61,7 +61,7 @@ export default class TreblleCore {
    * @param {T} data - Data to be processed and sent to Treblle.
    * @returns {Function} A task function that can be added to the queue for execution.
    */
-  private createTask<T extends IPluginData>(data: T) {
+  private createTask<T extends TrebllePluginPayload>(data: T) {
     const preparedData = this.parser.prepare(data);
     return async () => {
       try {
@@ -84,7 +84,7 @@ export default class TreblleCore {
    *
    * @param {T} data - Data to be processed and sent to Treblle.
    */
-  public start<T extends IPluginData>(data: T) {
+  public start<T extends TrebllePluginPayload>(data: T) {
     const task = this.createTask(data);
     this.queue.add(task);
   }

@@ -16,7 +16,7 @@ interface ITask {
 /**
  * Queue class for managing and executing asynchronous tasks with retries.
  */
-export default class Queue {
+export default class QueueRunner {
   /**
    * An array that holds tasks to be executed by the queue.
    */

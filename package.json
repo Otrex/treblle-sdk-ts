@@ -11,5 +11,8 @@
   },
   "dependencies": {
     "urllib": "^3.19.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7"
   }
 }
