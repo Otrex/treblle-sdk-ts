@@ -53,8 +53,8 @@ export default class TreblleKoa {
    * @returns {TrebllePluginPayload['request']} - The request data as a TrebllePluginPayload object.
    * @private
    */
-  private static extractRequestData(ctx: Koa.ParameterizedContext) {
-    const request = {
+  private static extractRequestData(ctx: Koa.ParameterizedContext): TrebllePluginPayload['request'] {
+    return {
       ip: ctx.ip,
       url: ctx.href,
       user_agent: ctx.headers['user-agent'],
@@ -62,7 +62,6 @@ export default class TreblleKoa {
       headers: ctx.headers,
       body: ctx.request.body || {},
     };
-    return request as TrebllePluginPayload['request'];
   }
 
   /**
@@ -71,14 +70,13 @@ export default class TreblleKoa {
    * @returns {TrebllePluginPayload['response']} - The response data as a TrebllePluginPayload object.
    * @private
    */
-  private static extractResponseData(ctx: Koa.ParameterizedContext) {
-    const response = {
+  private static extractResponseData(ctx: Koa.ParameterizedContext): TrebllePluginPayload['response'] {
+    return {
       headers: ctx.response.headers,
       code: ctx.status,
       size: ctx.length,
       body: ctx.body || {},
     };
-    return response as TrebllePluginPayload['response'];
   }
 
   /**
