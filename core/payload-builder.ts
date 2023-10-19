@@ -35,7 +35,7 @@ export default class PayloadBuilder {
   constructor(private config: TreblleConfig) {
     this.maskedFields = [
       ...this.maskedFields, //
-      ...config.additionalFieldsToMask
+      ...(config.additionalFieldsToMask || [])
     ];
   }
 
@@ -45,7 +45,7 @@ export default class PayloadBuilder {
    * @param {T} data - The payload data.
    * @returns {T} - The prepared payload data.
    */
-  public prepare<T extends TrebllePluginPayload>(data: T) {
+  public prepare(data: TrebllePluginPayload) {
     return this.maskedSensitiveFields(
       this.injectDefaultPayload(data)
     );
@@ -57,7 +57,7 @@ export default class PayloadBuilder {
    * @param {T} data - The payload data.
    * @returns {T} - The payload data with default values injected.
    */
-  private injectDefaultPayload<T extends TrebllePluginPayload>(data: T) {
+  private injectDefaultPayload(data: TrebllePluginPayload) {
     return {
       api_key: this.config.apiKey,
       project_id: this.config.projectId,
@@ -88,7 +88,7 @@ export default class PayloadBuilder {
         },
         response: {
           ...data.response,
-          load_time: this.getLoadTime(data.response['load_time'])
+          load_time: this.getLoadTime(data.response?.load_time)
         },
         errors: (data.errors || []),
       }
@@ -97,10 +97,10 @@ export default class PayloadBuilder {
 
   /**
    * Get load time in milliseconds.
-   * @param {(number[] | number | string)} loadTime - The load time data.
+   * @param {(number[] | number )} loadTime - The load time data.
    * @returns {number} - The load time in milliseconds.
    */
-  private getLoadTime(loadTime?: [number, number] | number | string) {
+  private getLoadTime(loadTime?: [number, number] | number) {
     if (typeof loadTime === 'object') {
       const diff = process.hrtime(loadTime)
       return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS
