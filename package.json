@@ -1,0 +1,12 @@
+{
+  "name": "treblle-sdk-ts",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "repository": "git@github.com:Otrex/treblle-sdk-ts.git",
+  "author": "Treasure <obisiket@yahoo.com> & Peter Osah",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
