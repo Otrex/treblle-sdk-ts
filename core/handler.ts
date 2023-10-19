@@ -1,7 +1,7 @@
 import { IPluginData, TreblleConfig } from "../types";
 import { httpClient } from "../utils";
-import LoadBalancer from "./loadBalancer";
 import Parser from "./Parser";
+import LoadBalancer from "./loadBalancer";
 import Queue from "./queue";
 
 /**
