@@ -11,6 +11,11 @@ interface ITask {
    * The number of retries for the task.
    */
   retries: number;
+
+  /**
+   * The callback when a job fails
+   */
+  onFail?: (job: ITask) => void;
 }
 
 /**
@@ -56,8 +61,8 @@ export default class QueueRunner {
    *
    * @param {ITask["job"]} job - The job function to be executed as a task.
    */
-  public add(job: ITask["job"], onFail = (job: ITask["job"]) => { }) {
-    this.queue.push({ job, retries: 0 });
+  public add(job: ITask["job"], onFail?: ITask['onFail']) {
+    this.queue.push({ job, retries: 0, onFail });
     this.process();
   }
 
@@ -73,6 +78,7 @@ export default class QueueRunner {
       if (task.retries < this.maxRetries) {
         task.retries += 1;
         this.queue.unshift(task);
+        task.onFail && task.onFail(task)
       }
     } finally {
       await this.process();

@@ -9,7 +9,7 @@ import { IncomingHttpHeaders } from "http2";
 export type TreblleConfig = {
   apiKey: string;
   projectId: string;
-  additionalFieldsToMask: string[];
+  additionalFieldsToMask?: string[];
 };
 
 /**

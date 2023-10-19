@@ -25,35 +25,28 @@ describe('QueueRunner', () => {
 
   it('should handle retries when a task fails', (done) => {
     const job = async () => {
-      await delay(1000);
-      console.log("error");
-      console.log(queue.$queue);
+      await delay(100);
+      throw new Error('Simulated error');
+    };
 
+    queue.add(job, (failedTask) => {
+      expect(queue.size).to.equal(1);
+      done();
+    });
+  });
 
+  it('should not retry a task if max retries exceeded', (done) => {
+    const job = async () => {
       throw new Error('Simulated error');
     };
 
     queue.add(job);
-    // queue.add(job);
 
     setTimeout(() => {
-      expect(queue.size).to.equal(1);
+      expect(queue.size).to.equal(0);
       done();
-    }, 3000);
+    }, 50);
   });
-
-  // it('should not retry a task if max retries exceeded', (done) => {
-  //   const job = async () => {
-  //     throw new Error('Simulated error');
-  //   };
-
-  //   queue.add(job);
-
-  //   setTimeout(() => {
-  //     expect(queue.size).to.equal(0);
-  //     done();
-  //   }, 50);
-  // });
 
   it('should execute multiple tasks in the queue', (done) => {
     const taskCount = 5;
