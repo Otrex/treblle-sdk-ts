@@ -45,7 +45,6 @@ export default class QueueRunner {
    * Retries are handled when tasks fail.
    */
   private async process() {
-    console.log("Running", this.$queue);
     if (this.queue.length > 0) {
       const task = this.queue.shift();
       if (task) this.run(task);
@@ -57,7 +56,7 @@ export default class QueueRunner {
    *
    * @param {ITask["job"]} job - The job function to be executed as a task.
    */
-  public add(job: ITask["job"]) {
+  public add(job: ITask["job"], onFail = (job: ITask["job"]) => { }) {
     this.queue.push({ job, retries: 0 });
     this.process();
   }
@@ -68,20 +67,13 @@ export default class QueueRunner {
    * @param {ITask} task - The task to be executed.
    */
   async run(task: ITask) {
-    console.log("Running", this.$queue);
-
     try {
       await task.job();
     } catch (error) {
       if (task.retries < this.maxRetries) {
         task.retries += 1;
         this.queue.unshift(task);
-
-
       }
-
-      console.log("Retrying task", this.queue.length, this.$queue);
-
     } finally {
       await this.process();
     }
