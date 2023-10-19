@@ -1,3 +1,5 @@
+import { IncomingHttpHeaders } from "http2";
+
 /**
  * Represents Treblle Config.
  * @param {string} apiKey - API Key from Treblle
@@ -24,7 +26,7 @@ export interface TrebllePluginRequest {
     "user-agent": string;
     "content-type"?: string;
     "content-length"?: string;
-  };
+  } & IncomingHttpHeaders;
   user_agent: string;
 }
 
@@ -36,7 +38,7 @@ export interface TrebllePluginResponse {
   headers: Record<string, any>;
   code: number;
   size: number | string;
-  load_time: number;
+  load_time?: number;
   body: string | Buffer | Record<string, any>;
 }
 

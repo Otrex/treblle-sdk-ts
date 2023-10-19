@@ -36,11 +36,15 @@ export default class QueueRunner {
     return this.queue.length;
   }
 
+  get $queue() {
+    return this.queue;
+  }
+
   /**
    * Processes the tasks in the queue by dequeuing and executing them if there are pending tasks.
    * Retries are handled when tasks fail.
    */
-  private process() {
+  private async process() {
     if (this.queue.length > 0) {
       const task = this.queue.shift();
       if (task) this.run(task);
@@ -52,7 +56,7 @@ export default class QueueRunner {
    *
    * @param {ITask["job"]} job - The job function to be executed as a task.
    */
-  public add(job: ITask["job"]) {
+  public add(job: ITask["job"], onFail = (job: ITask["job"]) => { }) {
     this.queue.push({ job, retries: 0 });
     this.process();
   }
@@ -71,7 +75,7 @@ export default class QueueRunner {
         this.queue.unshift(task);
       }
     } finally {
-      this.process();
+      await this.process();
     }
   }
 }
