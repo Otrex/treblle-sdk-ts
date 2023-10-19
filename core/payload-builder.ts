@@ -6,6 +6,12 @@ import {
   version as sdkVersion
 } from "../package.json";
 
+const NS_PER_SEC = 1e9
+const NS_TO_MS = 1e6
+
+/**
+ * The PayloadBuilder class for building Treblle payloads.
+ */
 export default class PayloadBuilder {
   private maskedFields = [
     "password",
@@ -22,6 +28,10 @@ export default class PayloadBuilder {
     "creditScore",
   ];
 
+  /**
+   * Create a new PayloadBuilder instance.
+   * @param {TreblleConfig} config - The Treblle configuration.
+   */
   constructor(private config: TreblleConfig) {
     this.maskedFields = [
       ...this.maskedFields, //
@@ -29,11 +39,24 @@ export default class PayloadBuilder {
     ];
   }
 
+  /**
+   * Prepare the payload data.
+   * @template T
+   * @param {T} data - The payload data.
+   * @returns {T} - The prepared payload data.
+   */
   public prepare<T extends TrebllePluginPayload>(data: T) {
-    const payload = this.injectDefaultPayload(data);
-    return this.maskedSensitiveFields(payload);
+    return this.maskedSensitiveFields(
+      this.injectDefaultPayload(data)
+    );
   }
 
+  /**
+   * Inject default payload data.
+   * @template T
+   * @param {T} data - The payload data.
+   * @returns {T} - The payload data with default values injected.
+   */
   private injectDefaultPayload<T extends TrebllePluginPayload>(data: T) {
     return {
       api_key: this.config.apiKey,
@@ -54,23 +77,76 @@ export default class PayloadBuilder {
           ...data.server,
         },
         language: {
-          ...GeneratePayload.languageData(),
-          ...data.language
+          name: "Node",
+          version: process.version,
+          ...(data.language || {})
         },
         request: {
-          ...GeneratePayload.requestData(),
+          timestamp: new Date().toISOString()
+            .replace('T', ' ').substring(0, 19),
           ...data.request
         },
         response: {
           ...data.response,
-          ...GeneratePayload.responseData(data.response)
+          load_time: this.getLoadTime(data.response['load_time'])
         },
-        errors: data.errors,
+        errors: (data.errors || []),
       }
     };;
   }
 
-  private maskedSensitiveFields(obj: trebllePayloadDataBody) {
-    return maskFields(obj, this.maskedFields);
+  /**
+   * Get load time in milliseconds.
+   * @param {(number[] | number | string)} loadTime - The load time data.
+   * @returns {number} - The load time in milliseconds.
+   */
+  private getLoadTime(loadTime?: [number, number] | number | string) {
+    if (typeof loadTime === 'object') {
+      const diff = process.hrtime(loadTime)
+      return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS
+    }
+
+    return loadTime
+  }
+
+
+  /**
+   * Mask sensitive fields in the object.
+   * @param {Record<string, any>} obj - The object to mask sensitive fields in.
+   * @returns {Record<string, any>} - The object with sensitive fields masked.
+   */
+  private maskedSensitiveFields(obj: Record<string, any>) {
+    return PayloadBuilder.maskFields(obj, this.maskedFields);
+  }
+
+  /**
+   * Mask fields in the data.
+   * @template T
+   * @param {T} data - The data to mask fields in.
+   * @param {string[]} fieldsToMask - The fields to mask.
+   * @returns {T} - The data with fields masked.
+   */
+  private static maskFields<T = any>(data: T, fieldsToMask: string[] = []): T {
+    if (typeof data !== "object" || data === null) {
+      return data;
+    }
+
+    if (Array.isArray(data)) {
+      return data.map((item) => PayloadBuilder.maskFields(item, fieldsToMask)) as T;
+    }
+
+    const maskedObject: T = {
+      ...data,
+    };
+
+    for (const key in data) {
+      if (fieldsToMask.includes(key)) {
+        maskedObject[key] = "***" as T[typeof key];
+      } else {
+        maskedObject[key] = PayloadBuilder.maskFields(data[key], fieldsToMask);
+      }
+    }
+
+    return maskedObject;
   }
 }

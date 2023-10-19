@@ -13,8 +13,26 @@ export type TreblleConfig = {
 
 
 export interface TrebllePluginPayload {
-  request: {};
-  response: {};
+  request: {
+    body: Record<string, any>;
+    ip?: string;
+    url: string;
+    method: string | "post" | "put" | "delete" | "patch" | "head";
+    headers: {
+      "host": string;
+      "user-agent": string;
+      "content-type"?: string;
+      "content-length"?: string;
+    },
+    user_agent: string;
+  };
+  response: {
+    headers: Record<string, any>;
+    code: number;
+    size: number | string;
+    load_time: number;
+    body: string | Buffer | Record<string, any>;
+  };
   server: {
     ip: string;
     software?: string;
@@ -22,6 +40,15 @@ export interface TrebllePluginPayload {
     protocol?: string;
     encoding?: string;
   };
-  language: {},
-  errors: [] | {}[]
+  language?: {
+    display_errors?: string | null;
+    expose_php?: string | null;
+  },
+  errors?: {
+    source?: string;
+    type?: string;
+    message?: string;
+    file?: string;
+    line?: number;
+  }[]
 }
