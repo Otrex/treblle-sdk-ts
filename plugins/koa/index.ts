@@ -65,7 +65,7 @@ export default class TreblleKoa {
         ...ctx.headers,
       },
       body: {
-        ...((ctx.request as Koa.ParameterizedContext['request']).body),
+        ...((ctx.request as (Koa.Context['request'] & { body: any })).body) || {},
         ...ctx.request.query
        } || {},
     };
