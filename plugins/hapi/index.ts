@@ -16,11 +16,11 @@ export default class TreblleHapi extends TrebllePlugin {
         const response = request.response as any;
 
         let responseData = '';
-        response.events.on('peek', (chunk: string) => {
+        response.events?.on('peek', (chunk: string) => {
           responseData += chunk.toString()
         });
 
-        response.events.once('finish', () => {
+        response.events?.once('finish', () => {
           const $request = Object.assign(request, {
             getIp() {
               const xFF = request.headers['x-forwarded-for']
