@@ -1,6 +1,6 @@
 import Hapi from "@hapi/hapi"
-import env from "../env";
-import TreblleHapi from "../plugins/hapi";
+import env from "../../env";
+import TreblleHapi from "../../plugins/hapi";
 
 
 const init = async () => {
