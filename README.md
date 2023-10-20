@@ -1,6 +1,6 @@
 # Treblle-SDK-TS
 
-`Treblle-SDK-TS` is a node typescript SDK that provides methods to integrate to [treblle](https://www.treblle.com/) API Monitoring. It can be used to build <b>plugins</b> for various node frameworks. 
+`Treblle-SDK-TS` is Node.js typescript SDK that provides methods to integrate to [treblle](https://www.treblle.com/) API Monitoring. It can be used to build <b>plugins</b> for various Node.js frameworks.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
@@ -46,7 +46,7 @@ yarn add your-sdk-name
 ## Usage
 To use `Treblle-SDK-TS` in your Node.js project, you chave to perform the following steps:
 
-1 - importing `TrebbleCore`:
+1. importing `TrebbleCore`:
 
 ```typescript
 //import trebllecore
@@ -54,7 +54,7 @@ import TreblleCore from 'treblle-sdk-ts';
 ```
 
 
-2 - Create an instance of `TrebbleCore`:
+2. Create an instance of `TrebbleCore`:
 
 ```typescript
 // Create an instance of the SDK
@@ -62,7 +62,7 @@ import TreblleCore from 'treblle-sdk-ts';
 const treblleCore = new TreblleCore(config);
 ```
 
-3 - call `TrebbleCore` <b>start</b> method:
+3. call `TrebbleCore` <b>start</b> method:
 
 ```typescript
 // Use the SDK's start method
@@ -83,7 +83,6 @@ More information about the interface will be shared in the documentation.
 
 
 In this project, we illustrated plugin development using three node frameworks
-
 
 
 * [Express](plugins/express/README.md)
