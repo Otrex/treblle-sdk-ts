@@ -39,7 +39,7 @@ describe('PayloadBuilder', () => {
 
     expect(preparedPayload.api_key).to.equal('your-api-key');
     expect(preparedPayload.project_id).to.equal('your-project-id');
-    expect(preparedPayload.version).to.equal('1.0.0'); // Server version
+    expect(preparedPayload.version).to.equal(pkg.version); // Server version
     expect(preparedPayload.sdk).to.equal(pkg.name); // SDK name
     expect(preparedPayload.data.server.software).to.be.null; // Software is set to null
     expect(preparedPayload.data.language.version).to.equal('v14.17.3');
