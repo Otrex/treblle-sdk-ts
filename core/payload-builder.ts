@@ -86,11 +86,11 @@ export default class PayloadBuilder {
           timestamp: new Date().toISOString()
             .replace('T', ' ').substring(0, 19),
           ...data.request,
-          url: this.parseURL(data.request.url),
+          url: this.parseURL(data.request?.url || 'http://localhost'),
         },
         response: {
           ...data.response,
-          body: data.response.body,
+          body: data.response?.body || {},
           load_time: this.getLoadTime(data.response?.load_time || process.hrtime())
         },
         errors: (data.errors || []),
