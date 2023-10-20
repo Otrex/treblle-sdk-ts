@@ -5,7 +5,7 @@ import TreblleKoa from '../../plugins/koa';
 const app = new Koa();
 const router = new Router();
 
-const PORT = 4000;
+const PORT = 3000;
 
 app.use(
   TreblleKoa.plugin({

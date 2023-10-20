@@ -10,7 +10,9 @@
     "pkg/"
   ],
   "scripts": {
-    "example:hapi": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/hapi.ts",
+    "example:hapi": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/hapi/index.ts",
+    "example:express": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/express/index.ts",
+    "example:koa": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/koa/index.ts",
     "test": "APP_ENV=test mocha -r ts-node/register --spec tests/**/*.test.ts"
   },
   "publishConfig": {
