@@ -1,6 +1,6 @@
 # Treblle-SDK-TS
 
-<b>Treblle-SDK-TS</b> is a node typescript SDK that provides methods to integrate to [treblle](https://www.treblle.com/) API Monitoring. It can be used to build <b>plugins</b> for various node frameworks. 
+`Treblle-SDK-TS` is a node typescript SDK that provides methods to integrate to [treblle](https://www.treblle.com/) API Monitoring. It can be used to build <b>plugins</b> for various node frameworks. 
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
@@ -153,9 +153,6 @@ We welcome contributions from the community. To contribute to ``Treblle-SDK-TS``
 * Make your changes and commit them.
 * Push your branch to your fork on GitHub.
 * Create a pull request from your fork to the main repository.
-
-
-Please review our Contributing Guidelines for more details.
 
 ## License
 
