@@ -8,6 +8,7 @@ import {
 
 const NS_PER_SEC = 1e9
 const NS_TO_MS = 1e6
+const MASK = "***"
 
 /**
  * The PayloadBuilder class for building Treblle payloads.
@@ -84,10 +85,12 @@ export default class PayloadBuilder {
         request: {
           timestamp: new Date().toISOString()
             .replace('T', ' ').substring(0, 19),
-          ...data.request
+          ...data.request,
+          url: this.parseURL(data.request.url),
         },
         response: {
           ...data.response,
+          body: data.response.body,
           load_time: this.getLoadTime(data.response?.load_time || process.hrtime())
         },
         errors: (data.errors || []),
@@ -107,6 +110,17 @@ export default class PayloadBuilder {
     }
 
     return loadTime
+  }
+
+  private parseURL(urlString: string) {
+    const url = new URL(urlString);
+    this.maskedFields.forEach((field) => {
+      if (url.searchParams.get(field)) {
+        url.searchParams.set(field, MASK)
+      }
+    })
+
+    return url.toString();
   }
 
 
@@ -141,7 +155,7 @@ export default class PayloadBuilder {
 
     for (const key in data) {
       if (fieldsToMask.includes(key)) {
-        maskedObject[key] = "***" as T[typeof key];
+        maskedObject[key] = MASK as T[typeof key];
       } else {
         maskedObject[key] = PayloadBuilder.maskFields(data[key], fieldsToMask);
       }

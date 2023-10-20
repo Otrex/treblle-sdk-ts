@@ -13,16 +13,12 @@ export default class TrebllePlugin {
    * @param {TreblleConfig} config - The Treblle configuration object.
    */
   static getInstance(config: TreblleConfig) {
-    if (!(TrebllePlugin.treblleCore instanceof TreblleCore)) {
-      TrebllePlugin.treblleCore = new TreblleCore({
+    if (!(this.treblleCore instanceof TreblleCore)) {
+      this.treblleCore = new TreblleCore({
         ...config,
       });
     }
 
-    return TrebllePlugin.treblleCore;
-  }
-
-  get core() {
-    return TrebllePlugin.treblleCore
+    return this.treblleCore;
   }
 }
