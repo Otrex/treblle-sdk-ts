@@ -27,7 +27,7 @@ export default class TreblleKoa extends TrebllePlugin {
         response: TreblleKoa.extractResponseData(ctx),
         server: TreblleKoa.extractServerData(ctx),
         language: {},
-        errors: [],
+        errors,
       });
     };
   };
