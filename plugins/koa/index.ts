@@ -57,10 +57,17 @@ export default class TreblleKoa {
     return {
       ip: ctx.ip,
       url: ctx.href,
-      user_agent: ctx.headers['user-agent'],
+      user_agent: ctx.headers['user-agent'] || 'no-agent',
       method: ctx.method,
-      headers: ctx.headers,
-      body: ctx.request.body || {},
+      headers: {
+        host: ctx.headers['host'] || "localhost",
+        "user-agent": ctx.headers['user-agent'] || 'no-agent',
+        ...ctx.headers,
+      },
+      body: {
+        ...((ctx.request as Koa.ParameterizedContext['request']).body),
+        ...ctx.request.query
+       } || {},
     };
   }
 
