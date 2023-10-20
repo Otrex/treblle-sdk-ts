@@ -2,7 +2,9 @@
 
 Here we'll demonstrate how you can create a Treblle plugin for your specific framework or application.
 
+## Getting Started
 
+Every plugin is a class that utilizes the [**TreblleCore**](docs/types.md#TreblleCore) class. When creating your plugin 
 ## Customization
 
 The `TreblleExpress` class offers customization options by providing methods to extract request and response data. You can adapt these methods to your specific requirements if needed.
