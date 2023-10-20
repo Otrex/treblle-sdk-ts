@@ -1,42 +1,35 @@
-# Treblle Express Integration Documentation 
+# Treblle Express Integration Documentation
 
-This documentation guides you on how to integrate Treblle with your Express.js application using the **TreblleExpress** class, which is designed to provide monitoring and error tracking capabilities.
+This documentation guides you on how to integrate `Treblle-SDK-TS` with your Express.js application using the **TreblleExpress** class, which is designed to provide monitoring and error tracking capabilities.
 
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![ts](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-
-## Introduction
-
-Treblle is a powerful tool for monitoring and enhancing the observability of your web applications. By integrating Treblle with your **Express.js** project, you can gain valuable insights into your application's performance and diagnose errors effectively.
-
-The **TreblleExpress** class is a simple yet powerful way to add Treblle's monitoring and error tracking features to your Express application.
 
 ## Prerequisites
 
 Before implementing Treblle Express integration, ensure the following prerequisites are met:
 
-- You have an existing Express.js application.
 - Node.js and npm are installed on your system.
 - You have the Treblle API key and project ID, which you can obtain from the Treblle website.
 Integration Steps
-- To integrate Treblle with your Express.js application, follow these steps:
 
-#### Install the Treblle Package
+<br/>
+To integrate Treblle with your Express.js application, follow these steps:
 
-Make sure you have the Treblle package installed. You can install it via npm:
+1. **Installing the Treblle Package**: Make sure you have the Treblle package installed. You can install it with either of the following commands below.
+
+Using NPM:
 
 ```bash
 npm install treblle-sdk-ts
 ```
 
-or
+using YARN:
 
 ```bash
 yarn add treblle-sdk-ts
 ```
 
-#### Import Necessary Dependencies
-
-In your Express application, import the required dependencies, including the TreblleExpress class and Express-specific components:
+2. **Importing the necessary dependencies**: In your Express application, import the required dependencies, including the TreblleExpress class and Express-specific components:
 
 ```ts
 import express from "express";
@@ -45,9 +38,7 @@ import {TreblleExpress} from "treblle-sdk-ts/plugins";
 const app = express();
 ```
 
-#### Set Up Treblle Configuration
-
-Create a configuration object that includes your Treblle API key and project ID. You can store these sensitive values in a separate configuration file, like env.js. Ensure you have the required configurations in place before proceeding.
+3. **Setting up the Treblle configuration:** Create a configuration object that includes your Treblle API key and project ID. You can store these sensitive values in a separate configuration file, like env.js. Ensure you have the required configurations in place before proceeding.
 
 ```ts
 import env from "path/to/env"; // Update the path
@@ -58,20 +49,16 @@ const treblleConfig: TreblleConfig = {
 };
 ```
 
-#### Implement Treblle Middleware
-
-Utilize the TreblleExpress.plugin method to create an Express middleware that acts as a Treblle plugin. This middleware captures and logs request and response data.
+4. **Implementing the Treblle middleware:** Utilize the `TreblleExpress.plugin` method to create an Express middleware that acts as a Treblle plugin. This middleware captures and logs request and response data.
 
 ```ts
 const treblleMiddleware = TreblleExpress.plugin(treblleConfig);
 app.use(treblleMiddleware);
 ```
 
-The treblleMiddleware should be added to your Express application using the app.use method. This middleware will automatically collect and log relevant data for each incoming request and response.
+The `treblleMiddleware` should be added to your Express application using the app.use method. This middleware will automatically collect and log relevant data for each incoming request and response.
 
-#### Start the Express Application
-
-Start your Express application as usual. For example:
+5. **Starting the Express application:** Start your Express application with the following:
 
 ```ts
 const PORT = process.env.PORT || 3000;
@@ -83,6 +70,4 @@ app.listen(PORT, () => {
 
 Your Express application is now integrated with Treblle. It will capture and log valuable data, including request and response details, errors, and performance metrics.
 
-## Conclusion
-
-By integrating Treblle with your Express.js application using the TreblleExpress class, you gain enhanced monitoring and error tracking capabilities. You can access your application's data and error reports through the Treblle dashboard, helping you identify and resolve issues to improve your application's reliability and performance.
+[Here](../../examples/express/index.ts) is an example file that shows how to configure the Treblle-SDK.
