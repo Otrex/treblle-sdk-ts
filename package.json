@@ -1,19 +1,22 @@
 {
   "name": "treblle-sdk-ts",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "pkg/index.js",
   "types": "pkg/index.d.ts",
   "repository": "git@github.com:Otrex/treblle-sdk-ts.git",
   "author": "Treasure <obisiket@yahoo.com> & Peter Osah",
   "license": "MIT",
   "files": [
-    "pkg/"
+    "pkg/",
+    "docs/",
+    "README.md"
   ],
   "scripts": {
     "example:hapi": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/hapi/index.ts",
     "example:express": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/express/index.ts",
     "example:koa": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/koa/index.ts",
-    "test": "APP_ENV=test mocha -r ts-node/register --spec tests/**/*.test.ts"
+    "test": "APP_ENV=test mocha -r ts-node/register --spec tests/**/*.test.ts",
+    "prepare": "rimraf ./pkg && tsc"
   },
   "publishConfig": {
     "access": "public"
@@ -36,6 +39,7 @@
     "koa": "^2.14.2",
     "mocha": "^10.2.0",
     "nock": "^13.3.6",
+    "rimraf": "^5.0.5",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
