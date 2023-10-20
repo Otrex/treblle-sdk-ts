@@ -1,38 +1,19 @@
 import * as hapi from "@hapi/hapi";
 import { version as treblleVersion } from "../../package.json";
 import TreblleCore, { TrebllePluginPayload, TreblleConfig } from "../../core";
+import TrebllePlugin from "../base";
 
 /**
  * A class to integrate Treblle with a Hapi.js application.
  */
-export default class TreblleHapi {
-  /**
-   * The TreblleCore instance used for monitoring and logging.
-   * @type {TreblleCore}
-   * @private
-   */
-  private static treblleCore: TreblleCore;
-
-  /**
-   * Set up the TreblleCore instance with the provided configuration.
-   * @param {TreblleConfig} config - The Treblle configuration object.
-   */
-  static setup(config: TreblleConfig) {
-    TreblleHapi.treblleCore = new TreblleCore({
-      ...config,
-    });
-  }
-
+export default class TreblleHapi extends TrebllePlugin {
   static plugin: hapi.Plugin<TreblleConfig> = {
     name: "TreblleHapi",
     version: treblleVersion,
     register(server, options) {
-      if (!(TreblleHapi.treblleCore instanceof TreblleCore)) {
-        TreblleHapi.setup(options);
-      }
+      const treblleCore = TreblleHapi.getInstance(options);
       server.ext("onPreResponse", function (request, h) {
         const response = request.response as any;
-        const Handler = TreblleHapi.treblleCore;
 
         let responseData = '';
         response.events.on('peek', (chunk: string) => {
@@ -50,11 +31,10 @@ export default class TreblleHapi {
             body: responseData,
           });
 
-          Handler.start<TrebllePluginPayload>({
+          treblleCore.start({
             request: TreblleHapi.extractRequestData($request),
             response: TreblleHapi.extractResponseData($response),
             server: TreblleHapi.extractServerData($request),
-            language: {},
             errors: [],
           });
         });

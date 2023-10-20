@@ -87,9 +87,9 @@ export default class TreblleCore {
   /**
    * Starts processing and dispatching data to Treblle servers by creating and adding a task to the queue.
    *
-   * @param {T} data - Data to be processed and sent to Treblle.
+   * @param {TrebllePluginPayload} data - Data to be processed and sent to Treblle.
    */
-  public start<T extends TrebllePluginPayload>(data: T) {
+  public start(data: TrebllePluginPayload) {
     const task = this.createTask(data);
     this.queue.add(task);
   }

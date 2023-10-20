@@ -1,28 +1,11 @@
 import Koa from 'koa';
 import TreblleCore, { TrebllePluginPayload, TreblleConfig } from "../../core";
+import TrebllePlugin from '../base';
 
 /**
  * A class to integrate Treblle with a Koa application.
  */
-export default class TreblleKoa {
-  /**
-   * The TreblleCore instance used for monitoring and logging.
-   * @type {TreblleCore}
-   * @private
-   */
-  private static treblleCore: TreblleCore;
-
-  /**
-   * Set up the TreblleCore instance with the provided configuration.
-   * @param {TreblleConfig} config - The Treblle configuration object.
-   * @private
-   */
-  private static setup(config: TreblleConfig) {
-    TreblleKoa.treblleCore = new TreblleCore({
-      ...config,
-    });
-  }
-
+export default class TreblleKoa extends TrebllePlugin {
   /**
    * Create a Koa middleware that acts as a Treblle plugin.
    * This middleware collects and logs request and response data.
@@ -30,19 +13,17 @@ export default class TreblleKoa {
    * @returns {Function} - Koa middleware function.
    */
   static plugin = (config: TreblleConfig) => {
-    if (!(TreblleKoa.treblleCore instanceof TreblleCore)) {
-      TreblleKoa.setup(config);
-    }
+    const treblleCore = TreblleKoa.getInstance(config);
 
     return async (ctx: Koa.ParameterizedContext, next: any) => {
       await next();
 
-      TreblleKoa.treblleCore.start<TrebllePluginPayload>({
+      treblleCore.start({
         request: TreblleKoa.extractRequestData(ctx),
         response: TreblleKoa.extractResponseData(ctx),
+        server: TreblleKoa.extractServerData(ctx),
         language: {},
         errors: [],
-        server: TreblleKoa.extractServerData(ctx),
       });
     };
   };

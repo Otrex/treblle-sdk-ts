@@ -1,28 +1,11 @@
-import { Request, RequestHandler } from "express";
+import { Request, RequestHandler, Response } from "express";
 import TreblleCore, { TrebllePluginPayload, TreblleConfig } from "../../core";
+import TrebllePlugin from "../base";
 
 /**
  * A class to integrate Treblle with an Express.js application.
  */
-export default class TreblleExpress {
-  /**
-   * The TreblleCore instance used for monitoring and logging.
-   * @type {TreblleCore}
-   * @private
-   */
-  private static treblleCore: TreblleCore;
-
-  /**
-   * Set up the TreblleCore instance with the provided configuration.
-   * @param {TreblleConfig} config - The Treblle configuration object.
-   * @private
-   */
-  private static setup(config: TreblleConfig) {
-    TreblleExpress.treblleCore = new TreblleCore({
-      ...config,
-    });
-  }
-
+export default class TreblleExpress extends TrebllePlugin {
   /**
    * Create an Express.js middleware that acts as a Treblle plugin.
    * This middleware collects and logs request and response data.
@@ -30,13 +13,10 @@ export default class TreblleExpress {
    * @returns {RequestHandler} - Express.js RequestHandler middleware.
    */
   static plugin(config: TreblleConfig): RequestHandler {
-    if (!(TreblleExpress.treblleCore instanceof TreblleCore)) {
-      TreblleExpress.setup(config);
-    }
+    const treblleCore = TreblleExpress.getInstance(config);
 
     return async (req, res, next) => {
       let responseData = '';
-      const Handler = TreblleExpress.treblleCore;
       const originalSend = res.send;
 
       res.send = function (body?: any) {
@@ -45,16 +25,17 @@ export default class TreblleExpress {
       }
 
 
-      res.on("finish", () => {
+      res.on("finish", function () {
         const $res = Object.assign(res, {
-          ...(responseData ? JSON.parse(`{"body":${responseData} }`) : {}),
+          ...(responseData
+            ? JSON.parse(`{"body":${responseData} }`)
+            : {}),
         })
 
-        Handler.start<TrebllePluginPayload>({
+        treblleCore.start({
           request: TreblleExpress.extractRequestData(req),
           response: TreblleExpress.extractResponseData($res),
           server: TreblleExpress.extractServerData(req),
-          language: {},
           errors: [],
         });
       });
@@ -62,6 +43,16 @@ export default class TreblleExpress {
       next();
     };
   };
+
+  private static getResponse(res: Response) {
+    return Object.create({
+      body: "",
+
+      instance() {
+
+      }
+    })
+  }
 
   /**
    * Extract relevant data from an Express.js Request object.
@@ -90,15 +81,15 @@ export default class TreblleExpress {
 
   /**
    * Extract relevant data from an Express.js Response object.
-   * @param {any} res - The Express Response object.
+   * @param {Response & { body: any }} res - The Express Response object.
    * @returns {TrebllePluginPayload['response']} - The response data as a TrebllePluginPayload object.
    * @private
    */
-  private static extractResponseData(res: any): TrebllePluginPayload['response'] {
+  private static extractResponseData(res: Response & { body: any }): TrebllePluginPayload['response'] {
     return {
       headers: res.getHeaders(),
       code: res.statusCode,
-      size: res.get('content-length'),
+      size: +(res.get('content-length') || 0),
       body: res.body || {}
     }
   }

@@ -2,25 +2,20 @@
 
 `Treblle-SDK-TS` is Node.js typescript SDK that provides methods to integrate to [treblle](https://www.treblle.com/) API Monitoring. It can be used to build <b>plugins</b> for various Node.js frameworks.
 
+> This **SDK** is intended for use in a Node.js (Typescript) environment. If you are unfamiliar with Treblle, please visit [treblle](https://www.treblle.com/) website for more info on the product, features and SDK options.
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
 ## Table of Contents
 - [Treblle-SDK-TS](#treblle-sdk-ts)
   - [Table of Contents](#table-of-contents)
-  - [Description](#description)
   - [Prerequisites](#prerequisites)
   - [Usage](#usage)
   - [Plugin Development](#plugin-development)
-  - [Examples](#examples)
   - [Documentation](#documentation)
   - [Contributing](#contributing)
   - [License](#license)
 
-
-## Description
-
-This SDK is intended for use in a Node.js (Typescript) environment.
-If you are unfamiliar with Treblle, please visit [treblle](https://www.treblle.com/) website for more info on the product, features and SDK options.
 
 ## Prerequisites
 
@@ -84,58 +79,6 @@ In this project, we illustrated plugin development using three node frameworks
 * [Hapi](plugins/hapi/README.md)
 
 We  also have example files for the usage of these plugins in the project.
-
-## Examples
-We've provided some example code in the examples directory to help you get started quickly. You can find examples for various use cases there.
-
-To run the examples, follow these steps:
-
-
-1 - <b>cd</b> into the example directory from the root directory:
-
-
-```bash
-cd examples
-```
-
-Once you access the examples directory, you will see the list of the sample projects in the order of `express`,   `hapi` and `koa`
-
-2 - Run the example script we have provided for the individual sample to start their respective servers:
-
-
-* <b>Express</b>
-
-```bash
-npm example:express
-
-# OR
-
-yarn example:express
-
-```
-
-* <b>Hapi</b>
-
-```bash
-npm example:hapi
-
-# OR
-
-yarn example:hapi
-```
-
-* <b>Koa</b>
-
-```bash
-npm example:koa
-
-# OR
-
-yarn example:koa
-```
-
-3 - Access the routes present in the respective examples with a client (**Postman** or **ThunderClient**):
-
 
 ## Documentation
 For detailed information on how to use `Treblle-SDK-TS` and its available methods, please refer to the official documentation.
