@@ -69,6 +69,8 @@ app.use(treblleMiddleware);
 
 The treblleMiddleware should be added to your Koa application using the app.use method. This middleware will automatically collect and log relevant data for each incoming request and response.
 
+N/B: For post requests, ensure that you have a parser available.
+
 #### Start the Koa Application
 
 Start your Koa application as usual. For example:

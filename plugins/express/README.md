@@ -58,6 +58,8 @@ app.use(treblleMiddleware);
 
 The `treblleMiddleware` should be added to your Express application using the app.use method. This middleware will automatically collect and log relevant data for each incoming request and response.
 
+<b>N/B</b>: For post requests, you should have your body parser middleware available. 
+
 5. **Starting the Express application:** Start your Express application with the following:
 
 ```ts
