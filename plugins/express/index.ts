@@ -2,6 +2,7 @@ import { Request, RequestHandler, Response } from "express";
 import TreblleCore, { TrebllePluginPayload, TreblleConfig } from "../../core";
 import TrebllePlugin from "../base";
 
+export type ResponseWithBody = Response & { body: any }
 /**
  * A class to integrate Treblle with an Express.js application.
  */
@@ -15,26 +16,13 @@ export default class TreblleExpress extends TrebllePlugin {
   static plugin(config: TreblleConfig): RequestHandler {
     const treblleCore = TreblleExpress.getInstance(config);
 
-    return async (req, res, next) => {
-      let responseData = '';
-      const originalSend = res.send;
-
-      res.send = function (body?: any) {
-        responseData = body;
-        return originalSend.call(res, body);
-      }
-
+    return async (req, _res, next) => {
+      const res = this.buildResponse(_res);
 
       res.on("finish", function () {
-        const $res = Object.assign(res, {
-          ...(responseData
-            ? JSON.parse(`{"body":${responseData} }`)
-            : {}),
-        })
-
         treblleCore.start({
           request: TreblleExpress.extractRequestData(req),
-          response: TreblleExpress.extractResponseData($res),
+          response: TreblleExpress.extractResponseData(res),
           server: TreblleExpress.extractServerData(req),
           errors: [],
         });
@@ -44,14 +32,25 @@ export default class TreblleExpress extends TrebllePlugin {
     };
   };
 
-  private static getResponse(res: Response) {
-    return Object.create({
-      body: "",
+  private static buildResponse(res: Response) {
+    const originalSend = res.send;
+    let __body = "";
 
-      instance() {
-
+    const __res = Object.assign(res, {
+      body() {
+        const value = __body
+          ? JSON.parse(`{"body":${__body} }`)
+          : {};
+        return value.body;
       }
     })
+
+    res.send = function (body?: any) {
+      __body = body;
+      return originalSend.call(res, body);
+    }
+
+    return __res;
   }
 
   /**
@@ -81,16 +80,16 @@ export default class TreblleExpress extends TrebllePlugin {
 
   /**
    * Extract relevant data from an Express.js Response object.
-   * @param {Response & { body: any }} res - The Express Response object.
+   * @param {ResponseWithBody} res - The Express Response object.
    * @returns {TrebllePluginPayload['response']} - The response data as a TrebllePluginPayload object.
    * @private
    */
-  private static extractResponseData(res: Response & { body: any }): TrebllePluginPayload['response'] {
+  private static extractResponseData(res: ResponseWithBody): TrebllePluginPayload['response'] {
     return {
       headers: res.getHeaders(),
       code: res.statusCode,
       size: +(res.get('content-length') || 0),
-      body: res.body || {}
+      body: res.body() || {}
     }
   }
 
