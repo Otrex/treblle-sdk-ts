@@ -67,7 +67,6 @@ export default class TreblleCore {
     const preparedData = this.parser.prepare(data);
 
     return async () => {
-      console.log(JSON.stringify(preparedData, undefined, 2));
       try {
         await request(this.router.getNextEndpoint(), {
           data: preparedData,

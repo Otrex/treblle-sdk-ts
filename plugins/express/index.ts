@@ -19,12 +19,16 @@ export default class TreblleExpress extends TrebllePlugin {
     return async (req, _res, next) => {
       const res = this.buildResponse(_res);
 
+      const invalidResponse = TreblleExpress.isNotBufferObjectOrString(res.body);
+      let errors: any[] = [];
+      if(invalidResponse) errors = invalidResponse;
+      
       res.on("finish", function () {
         treblleCore.start({
           request: TreblleExpress.extractRequestData(req),
           response: TreblleExpress.extractResponseData(res),
           server: TreblleExpress.extractServerData(req),
-          errors: [],
+          errors,
         });
       });
 
@@ -103,6 +107,28 @@ export default class TreblleExpress extends TrebllePlugin {
     return {
       ip: req.ip,
       protocol: `${req.protocol}/${req.httpVersion}`,
+    }
+  }
+
+
+  /**
+   * Check if a response body is neither a buffer, object, nor string.
+   * @param {*} body - The response body to check.
+   * @returns {Record<any, any>} - `object` if the body is not a buffer, object, or string, `object` otherwise.
+   */
+  private static isNotBufferObjectOrString(body: any): any[] | null {
+    if((Buffer.isBuffer(body)) || (typeof body === 'object') || (typeof body === 'string')){
+      return null;
+    }else {
+      return [
+        {
+          source: 'response_body',
+          type: 'invalid_data',
+          message: 'Invalid data format',
+          file: null,
+          line: null,
+        }
+      ]
     }
   }
 }
