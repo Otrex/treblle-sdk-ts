@@ -5,9 +5,6 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
 ## Table of Contents
-
-- [Description](#description)
-<!-- - [Installation](#installation) -->
 - [Treblle-SDK-TS](#treblle-sdk-ts)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
@@ -22,14 +19,12 @@
 
 ## Description
 
-This SDK is intended for use in a Node.js environment.
+This SDK is intended for use in a Node.js (Typescript) environment.
 If you are unfamiliar with Treblle, please visit [treblle](https://www.treblle.com/) website for more info on the product, features and SDK options.
-
-
 
 ## Prerequisites
 
-It goes without saying that should have an active [Treblle](https://www.treblle.com) project in order for this SDK to be of any use to you. This is because you would require treblle's `api_key` and `project_id` values in order to run the sdk.
+It goes without saying that you should have an active [Treblle](https://www.treblle.com) account and have created a project in order for this SDK to be of any use to you. This is because you would require treblle's `api_key` and `project_id` values in order to run the sdk.
 
 <!-- ## Installation
 
@@ -44,17 +39,16 @@ yarn add your-sdk-name
 ``` -->
 
 ## Usage
-To use `Treblle-SDK-TS` in your Node.js project, you chave to perform the following steps:
+To use `Treblle-SDK-TS` in your Node.js project, you have to perform the following steps:
 
-1. importing `TrebbleCore`:
+1. importing `TreblleCore`:
 
 ```typescript
 //import trebllecore
-import TreblleCore from 'treblle-sdk-ts';
+import TreblleCore from 'treblle-sdk-ts/core';
 ```
 
-
-2. Create an instance of `TrebbleCore`:
+2. Create an instance of `TreblleCore`:
 
 ```typescript
 // Create an instance of the SDK
@@ -62,7 +56,7 @@ import TreblleCore from 'treblle-sdk-ts';
 const treblleCore = new TreblleCore(config);
 ```
 
-3. call `TrebbleCore` <b>start</b> method:
+3. call `TreblleCore` <b>start</b> method:
 
 ```typescript
 // Use the SDK's start method
@@ -140,7 +134,7 @@ npm example:koa
 yarn example:koa
 ```
 
-3 - Access the routes present in the respective examples with a client (<b>Postman</b> or <b>ThunderClient</b>):
+3 - Access the routes present in the respective examples with a client (**Postman** or **ThunderClient**):
 
 
 ## Documentation
