@@ -9,6 +9,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
+      - name: Create env.ts
+        run: cp env.example.ts env.ts
       - name: Install dependencies
         run: yarn
       - name: Run Test
