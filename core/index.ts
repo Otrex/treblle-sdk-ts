@@ -65,6 +65,9 @@ export default class TreblleCore {
    */
   private createTask<T extends TrebllePluginPayload>(data: T) {
     const preparedData = this.parser.prepare(data);
+
+    console.log(JSON.stringify(preparedData, undefined, 2));
+
     return async () => {
       try {
         await request(this.router.getNextEndpoint(), {

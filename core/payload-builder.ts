@@ -88,7 +88,7 @@ export default class PayloadBuilder {
         },
         response: {
           ...data.response,
-          load_time: this.getLoadTime(data.response?.load_time)
+          load_time: this.getLoadTime(data.response?.load_time || process.hrtime())
         },
         errors: (data.errors || []),
       }
