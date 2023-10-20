@@ -70,7 +70,7 @@ This means data masking is super fast and happens on a programming level before 
 ### Install the SDK
 
 <!-- Installation instruction for the platform goes here -->
-> See the [docs](docs/setup.md) for this SDK to learn more.
+> See the [docs](./docs/setup.md) for this SDK to learn more.
 
 ## Available SDKs
 
