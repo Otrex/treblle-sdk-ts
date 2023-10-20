@@ -10,6 +10,7 @@
     "pkg/"
   ],
   "scripts": {
+    "example:hapi": "nodemon --watch \"*.ts\" --exec \"ts-node\" examples/hapi.ts",
     "test": "APP_ENV=test mocha -r ts-node/register --spec tests/**/*.test.ts"
   },
   "publishConfig": {
@@ -19,8 +20,10 @@
     "urllib": "^3.19.3"
   },
   "devDependencies": {
+    "@hapi/hapi": "^21.3.2",
     "@types/chai": "^4.3.9",
     "@types/express": "^4.17.20",
+    "@types/hapi": "^18.0.12",
     "@types/mocha": "^10.0.3",
     "@types/node": "^20.8.7",
     "chai": "^4.3.10",
