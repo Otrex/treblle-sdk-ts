@@ -64,13 +64,7 @@ export default class TreblleHapi {
     },
   };
 
-  /**
-   * Extract relevant data from a Hapi.js Request object for the request.
-   * @param {hapi.Request & { getIp(): string }} req - The Hapi Request object with the `getIp` method.
-   * @returns {TrebllePluginPayload['request']} - The request data as a TrebllePluginPayload object.
-   * @private
-   */
-  static extractRequestData(req: hapi.Request & { getIp(): string }): TrebllePluginPayload['request'] {
+  static extractRequestData(req: hapi.Request & { getIp(): string }) {
     return {
       ip: req.getIp(),
       body: { ...req.payload as any, ...req.query, ...req.params },
@@ -85,7 +79,7 @@ export default class TreblleHapi {
     }
   }
 
-  private static extractResponseData(res: hapi.ResponseObject & { body: string }): TrebllePluginPayload['response'] {
+  private static extractResponseData(res: hapi.ResponseObject & { body: string }) {
     return {
       headers: {},
       code: res.statusCode,
