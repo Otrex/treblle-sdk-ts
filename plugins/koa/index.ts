@@ -18,6 +18,10 @@ export default class TreblleKoa extends TrebllePlugin {
     return async (ctx: Koa.ParameterizedContext, next: any) => {
       await next();
 
+      const invalidResponse = TreblleKoa.isNotBufferObjectOrString(ctx.body);
+      let errors: any[] = [];
+      if(invalidResponse) errors = invalidResponse;
+
       treblleCore.start({
         request: TreblleKoa.extractRequestData(ctx),
         response: TreblleKoa.extractResponseData(ctx),
@@ -78,5 +82,26 @@ export default class TreblleKoa extends TrebllePlugin {
       ip: ctx.ip,
       protocol: `${ctx.request.protocol}/${ctx.req.httpVersion}`,
     };
+  }
+
+  /**
+   * Check if a response body is neither a buffer, object, nor string.
+   * @param {*} body - The response body to check.
+   * @returns {Record<any, any>} - `object` if the body is not a buffer, object, or string, `object` otherwise.
+   */
+  private static isNotBufferObjectOrString(body: any): any[] | null {
+    if((Buffer.isBuffer(body)) || (typeof body === 'object') || (typeof body === 'string')){
+      return null;
+    }else {
+      return [
+        {
+          source: 'response_body',
+          type: 'invalid_data',
+          message: 'Invalid data format',
+          file: null,
+          line: null,
+        }
+      ]
+    }
   }
 }
