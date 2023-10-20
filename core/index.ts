@@ -66,7 +66,6 @@ export default class TreblleCore {
   private createTask<T extends TrebllePluginPayload>(data: T) {
     const preparedData = this.parser.prepare(data);
 
-
     return async () => {
       console.log(JSON.stringify(preparedData, undefined, 2));
       try {
@@ -78,7 +77,9 @@ export default class TreblleCore {
             "x-api-key": this.config.apiKey,
           },
         })
+        console.log('\x1b[32m', `payload sent to treblle ✅`);
       } catch (error) {
+        console.error('\x1b[31m', `error occured 😬... Unable to send payload to treblle`);
         throw error;
       }
     };
